@@ -1,5 +1,5 @@
-use pcre2::bytes::Regex as PCRERegex;
 use phf_codegen::Map as PhfMap;
+use regex::bytes::Regex;
 use serde::Deserialize;
 use std::{
     collections::HashMap,
@@ -113,19 +113,25 @@ enum PatternDTO {
     Positive(MaybeMany<String>),
 }
 
+fn mangle(pattern: &str) -> String {
+    pattern.replace("\\/", "/").replace("\\<", "<").replace("\\%", "%")
+}
+
 impl PatternDTO {
     fn to_domain_object_code(&self, named_patterns: &NamedPatterns) -> String {
         match self {
             PatternDTO::Positive(MaybeMany::One(pattern)) => {
                 // Panic on invalid regex now so we can unwrap in lib
-                if let Err(e) = PCRERegex::new(pattern) {
+                let pattern = mangle(&pattern);
+                if let Err(e) = Regex::new(&pattern) {
                     panic!("Invalid regex pattern: {}\n{}", pattern, e);
                 }
                 format!("Pattern::Positive({:?})", pattern)
             }
             PatternDTO::Negative(pattern) => {
                 // Panic on invalid regex now so we can unwrap in lib
-                if let Err(e) = PCRERegex::new(pattern) {
+                let pattern = mangle(&pattern);
+                if let Err(e) = Regex::new(&pattern) {
                     panic!("Invalid regex pattern: {}\n{}", pattern, e);
                 }
                 format!("Pattern::Negative({:?})", pattern)

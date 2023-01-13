@@ -1,4 +1,4 @@
-use pcre2::bytes::RegexBuilder as PCRERegex;
+use regex::bytes::RegexBuilder;
 
 // Include the map from interpreters to languages at compile time
 // static DISAMBIGUATIONS: phf::Map<&'static str, &'static [Rule]> = ...;
@@ -22,20 +22,20 @@ impl Pattern {
     fn matches(&self, content: &str) -> bool {
         match self {
             Pattern::Positive(pattern) => {
-                let regex = PCRERegex::new()
-                    .crlf(true)
+                let regex = RegexBuilder::new(pattern)
+                    //.crlf(true) TODO: Figure this out
                     .multi_line(true)
-                    .build(pattern)
+                    .build()
                     .unwrap();
-                regex.is_match(content.as_bytes()).unwrap_or(false)
+                regex.is_match(content.as_bytes())
             }
             Pattern::Negative(pattern) => {
-                let regex = PCRERegex::new()
-                    .crlf(true)
+                let regex = RegexBuilder::new(pattern)
+                    //.crlf(true)
                     .multi_line(true)
-                    .build(pattern)
+                    .build()
                     .unwrap();
-                !regex.is_match(content.as_bytes()).unwrap_or(true)
+                !regex.is_match(content.as_bytes())
             }
             Pattern::Or(patterns) => patterns.iter().any(|pattern| pattern.matches(content)),
             Pattern::And(patterns) => patterns.iter().all(|pattern| pattern.matches(content)),

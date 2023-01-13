@@ -55,7 +55,7 @@ disambiguations:
   - language: Public Key
     pattern: '^(----[- ]BEGIN|ssh-(rsa|dss)) '
   - language: AsciiDoc
-    pattern: '^[=-]+(\s|\n)|{{[A-Za-z]'
+    pattern: '^[=-]+(\s|\n)|\{\{[A-Za-z]'
   - language: AGS Script
     pattern: '^(\/\/.+|((import|export)\s+)?(function|int|float|char)\s+((room|repeatedly|on|game)_)?([A-Za-z]+[A-Za-z_0-9]+)\s*[;\(])'
 - extensions: ['.asm']
@@ -93,7 +93,7 @@ disambiguations:
 - extensions: ['.cls']
   rules:
   - language: TeX
-    pattern: '\\\w+{'
+    pattern: '\\\w+\{'
   - language: ObjectScript
     pattern: '^Class\s'
 - extensions: ['.cs']
@@ -101,16 +101,16 @@ disambiguations:
   - language: Smalltalk
     pattern: '![\w\s]+methodsFor: '
   - language: 'C#'
-    pattern: '^(\s*namespace\s*[\w\.]+\s*{|\s*\/\/)'
+    pattern: '^(\s*namespace\s*[\w\.]+\s*\{|\s*\/\/)'
 - extensions: ['.d']
   rules:
   - language: D
     # see http://dlang.org/spec/grammar
     # ModuleDeclaration | ImportDeclaration | FuncDeclaration | unittest
-    pattern: '^module\s+[\w.]*\s*;|import\s+[\w\s,.:]*;|\w+\s+\w+\s*\(.*\)(?:\(.*\))?\s*{[^}]*}|unittest\s*(?:\(.*\))?\s*{[^}]*}'
+    pattern: '^module\s+[\w.]*\s*;|import\s+[\w\s,.:]*;|\w+\s+\w+\s*\(.*\)(?:\(.*\))?\s*\{[^}]*\}|unittest\s*(?:\(.*\))?\s*\{[^}]*\}'
   - language: DTrace
     # see http://dtrace.org/guide/chp-prog.html, http://dtrace.org/guide/chp-profile.html, http://dtrace.org/guide/chp-opt.html
-    pattern: '^(\w+:\w*:\w*:\w*|BEGIN|END|provider\s+|(tick|profile)-\w+\s+{[^}]*}|#pragma\s+D\s+(option|attributes|depends_on)\s|#pragma\s+ident\s)'
+    pattern: '^(\w+:\w*:\w*:\w*|BEGIN|END|provider\s+|(tick|profile)-\w+\s+\{[^}]*\}|#pragma\s+D\s+(option|attributes|depends_on)\s|#pragma\s+ident\s)'
   - language: Makefile
     # path/target : dependency \
     # target : \
@@ -134,7 +134,7 @@ disambiguations:
   - language: Erlang
     pattern: '^\s*(?:%%|main\s*\(.*?\)\s*->)'
   - language: JavaScript
-    pattern: '(?m:\/\/|("|'')use strict\1|export\s+default\s|\/\*.*?\*\/)'
+    pattern: '(?m:\/\/|("|'')use strict("|'')|export\s+default\s|\/\*.*?\*\/)'
 - extensions: ['.f']
   rules:
   - language: Forth
@@ -215,14 +215,14 @@ disambiguations:
   - language: PHP
     pattern: '^<\?(?:php)?'
   - language: SourcePawn
-    pattern: '^public\s+(?:SharedPlugin(?:\s+|:)__pl_\w+\s*=(?:\s*{)?|(?:void\s+)?__pl_\w+_SetNTVOptional\(\)(?:\s*{)?)'
+    pattern: '^public\s+(?:SharedPlugin(?:\s+|:)__pl_\w+\s*=(?:\s*\{)?|(?:void\s+)?__pl_\w+_SetNTVOptional\(\)(?:\s*\{)?)'
   - language: NASL
     pattern:
-    - '^\s*include\s*\(\s*(?:"|'')[\\/\w\-\.:\s]+\.(?:nasl|inc)\s*(?:"|'')\s*\)\s*;'
+    - '^\s*include\s*\(\s*(?:"|'')[\\\w/\-\.:\s]+\.(?:nasl|inc)\s*(?:"|'')\s*\)\s*;'
     - '^\s*(?:global|local)_var\s+(?:\w+(?:\s*=\s*[\w\-"'']+)?\s*)(?:,\s*\w+(?:\s*=\s*[\w\-"'']+)?\s*)*+\s*;'
-    - '^\s*namespace\s+\w+\s*{'
-    - '^\s*object\s+\w+\s*(?:extends\s+\w+(?:::\w+)?)?\s*{'
-    - '^\s*(?:public\s+|private\s+|\s*)function\s+\w+\s*\([\w\s,]*\)\s*{'
+    - '^\s*namespace\s+\w+\s*\{'
+    - '^\s*object\s+\w+\s*(?:extends\s+\w+(?:::\w+)?)?\s*\{'
+    - '^\s*(?:public\s+|private\s+|\s*)function\s+\w+\s*\([\w\s,]*\)\s*\{'
   - language: POV-Ray SDL
     pattern: '^\s*#(declare|local|macro|while)\s'
 - extensions: ['.l']
@@ -238,7 +238,7 @@ disambiguations:
 - extensions: ['.ls']
   rules:
   - language: LoomScript
-    pattern: '^\s*package\s*[\w\.\/\*\s]*\s*{'
+    pattern: '^\s*package\s*[\w\.\/\*\s]*\s*\{'
   - language: LiveScript
 - extensions: ['.lsp', '.lisp']
   rules:
@@ -263,7 +263,7 @@ disambiguations:
   - language: MATLAB
     pattern: '^\s*%'
   - language: Limbo
-    pattern: '^\w+\s*:\s*module\s*{'
+    pattern: '^\w+\s*:\s*module\s*\{'
 - extensions: ['.mask']
   rules:
   - language: Unity3d Asset
@@ -404,7 +404,7 @@ disambiguations:
 - extensions: ['.q']
   rules:
   - language: q
-    pattern: '((?i:[A-Z.][\w.]*:{)|(^|\n)\\(cd?|d|l|p|ts?) )'
+    pattern: '((?i:[A-Z.][\w.]*:\{)|(^|\n)\\(cd?|d|l|p|ts?) )'
   - language: HiveQL
     pattern: '(?i:SELECT\s+[\w*,]+\s+FROM|(CREATE|ALTER|DROP)\s(DATABASE|SCHEMA|TABLE))'
 - extensions: ['.r']
@@ -416,7 +416,7 @@ disambiguations:
 - extensions: ['.rno']
   rules:
   - language: RUNOFF
-    pattern: '(?i:^\.!|^\f|\f$|^\.end lit(?:eral)?\b|^\.[a-zA-Z].*?;\.[a-zA-Z](?:[; \t])|\^\*[^\s*][^*]*\\\*(?=$|\s)|^\.c;[ \t]*\w+)'
+    pattern: '(?i:^\.!|^\f|\f$|^\.end lit(?:eral)?\b|^\.[a-zA-Z].*?;\.[a-zA-Z](?:[; \t])|\^\*[^\s*][^*]*\\\*)'
   - language: Roff
     pattern: '^\.\\" '
 - extensions: ['.rpy']
@@ -518,7 +518,7 @@ disambiguations:
   - language: DirectX 3D File
     pattern:  '^xof 030(2|3)(?:txt|bin|tzip|bzip)\b'
   - language: RPC
-    pattern: '\b(program|version)\s+\w+\s*{|\bunion\s+\w+\s+switch\s*\('
+    pattern: '\b(program|version)\s+\w+\s*\{|\bunion\s+\w+\s+switch\s*\('
   - language: Logos
     pattern: '^%(end|ctor|hook|group)\b'
   - language: Linker Script
@@ -526,7 +526,7 @@ disambiguations:
 - extensions: ['.yy']
   rules:
   - language: JSON
-    pattern: '\"modelName\"\:\s*\"GM'
+    pattern: '"modelName":\s*"GM'
   - language: Yacc
 named_patterns:
   cpp:

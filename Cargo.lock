@@ -53,12 +53,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cc"
-version = "1.0.50"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95e28fa049fda1c330bcf9d723be7663a899c4679724b34c81e9f5a326aab8cd"
-
-[[package]]
 name = "cfg-if"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -181,7 +175,6 @@ dependencies = [
  "ignore",
  "lazy_static",
  "num_cpus",
- "pcre2",
  "phf",
  "phf_codegen",
  "polyglot_tokenizer",
@@ -375,29 +368,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pcre2"
-version = "0.2.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85b30f2f69903b439dd9dc9e824119b82a55bf113b29af8d70948a03c1b11ab1"
-dependencies = [
- "libc",
- "log",
- "pcre2-sys",
- "thread_local",
-]
-
-[[package]]
-name = "pcre2-sys"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "876c72d05059d23a84bd9fcdc3b1d31c50ea7fe00fe1522b4e68cd3608db8d5b"
-dependencies = [
- "cc",
- "libc",
- "pkg-config",
-]
-
-[[package]]
 name = "phf"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -434,12 +404,6 @@ checksum = "e1fb5f6f826b772a8d4c0394209441e7d37cbbb967ae9c7e0e8134365c9ee676"
 dependencies = [
  "siphasher",
 ]
-
-[[package]]
-name = "pkg-config"
-version = "0.3.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "05da548ad6865900e60eaba7f589cc0783590a92e940c26953ff81ddbab2d677"
 
 [[package]]
 name = "polyglot_tokenizer"
