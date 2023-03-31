@@ -15,16 +15,16 @@ exclude = ["samples/", "vendor.yml", "heuristics.yml", "documentation.yml", "lan
 members = ["crates/py_polyglot_tokenizer"]
 
 [dependencies]
-clap = "2.33.0"
-ignore = "0.4.1"
+clap = "2.34.0"
+ignore = "0.4.18"
 lazy_static = "1.4.0"
-num_cpus = "1.13.0"
+num_cpus = "1.15.0"
 phf = "0.11.1"
 phf_codegen = "0.11.1"
-regex = "1.3.5"
-serde = { version = "1.0.105", features = ["derive"] }
+regex = "1.7.3"
+serde = { version = "1.0.159", features = ["derive"] }
 serde_yaml = "0.8"
-termcolor = "1.1.0"
+termcolor = "1.2.0"
 polyglot_tokenizer = { path = "crates/polyglot_tokenizer", version = "0.2.1" }
 
 [[bin]]
