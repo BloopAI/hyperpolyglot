@@ -118,7 +118,7 @@ impl Detection {
     }
 }
 
-/// Detects the programming language of the file at a given path
+/// Detects the programming language of the file and buffer
 ///
 /// If the language cannot be determined, None will be returned.
 /// `detect` will error on an io error or if the parser returns an error when tokenizing the
@@ -126,14 +126,17 @@ impl Detection {
 ///
 /// # Examples
 /// ```
-/// use std::path::Path;
-/// use hyperpolyglot::{detect, Detection};
+/// use std::{fs::File, path::Path};
+/// use hyperpolyglot::{detect_buffer, Detection};
 ///
 /// let path = Path::new("src/bin/main.rs");
-/// let language = detect(path).unwrap().unwrap();
+/// let language = detect_buffer(path, |f| File::open(f)).unwrap().unwrap();
 /// assert_eq!(Detection::Heuristics("Rust"), language);
 /// ```
-pub fn detect(path: &Path) -> Result<Option<Detection>, std::io::Error> {
+pub fn detect_buffer<T: std::io::Read + std::io::Seek>(
+    path: &Path,
+    buf: impl Fn(&Path) -> Result<T, std::io::Error>,
+) -> Result<Option<Detection>, std::io::Error> {
     let filename = match path.file_name() {
         Some(filename) => filename.to_str(),
         None => return Ok(None),
@@ -154,7 +157,7 @@ pub fn detect(path: &Path) -> Result<Option<Detection>, std::io::Error> {
         return Ok(Some(Detection::Extension(candidates[0])));
     };
 
-    let file = File::open(path)?;
+    let file = buf(path)?;
     let mut reader = BufReader::new(file);
 
     let candidates = filter_candidates(
@@ -192,6 +195,25 @@ pub fn detect(path: &Path) -> Result<Option<Detection>, std::io::Error> {
             &candidates,
         )))),
     }
+}
+
+/// Detects the programming language of the file at a given path
+///
+/// If the language cannot be determined, None will be returned.
+/// `detect` will error on an io error or if the parser returns an error when tokenizing the
+/// contents of the file
+///
+/// # Examples
+/// ```
+/// use std::path::Path;
+/// use hyperpolyglot::{detect, Detection};
+///
+/// let path = Path::new("src/bin/main.rs");
+/// let language = detect(path).unwrap().unwrap();
+/// assert_eq!(Detection::Heuristics("Rust"), language);
+/// ```
+pub fn detect(path: &Path) -> Result<Option<Detection>, std::io::Error> {
+    detect_buffer(path, |f| File::open(f))
 }
 
 // function stolen from from https://doc.rust-lang.org/nightly/src/core/str/mod.rs.html
