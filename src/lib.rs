@@ -129,7 +129,7 @@ impl Detection {
 /// use std::{fs::File, path::Path};
 /// use hyperpolyglot::{detect_buffer, Detection};
 ///
-/// let path = Path::new("src/bin/main.rs");
+/// let path = Path::new("test_main.rs");
 /// let language = detect_buffer(path, |f| File::open(f)).unwrap().unwrap();
 /// assert_eq!(Detection::Heuristics("Rust"), language);
 /// ```
@@ -142,15 +142,15 @@ pub fn detect_buffer<T: std::io::Read + std::io::Seek>(
         None => return Ok(None),
     };
 
-    let candidate = filename.and_then(|filename| detectors::get_language_from_filename(filename));
+    let candidate = filename.and_then(detectors::get_language_from_filename);
     if let Some(candidate) = candidate {
         return Ok(Some(Detection::Filename(candidate)));
     };
 
-    let extension = filename.and_then(|filename| detectors::get_extension(filename));
+    let extension = filename.and_then(detectors::get_extension);
 
     let candidates = extension
-        .map(|ext| detectors::get_languages_from_extension(ext))
+        .map(detectors::get_languages_from_extension)
         .unwrap_or_else(Vec::new);
 
     if candidates.len() == 1 {
@@ -178,7 +178,7 @@ pub fn detect_buffer<T: std::io::Read + std::io::Seek>(
     let candidates = if candidates.len() > 1 {
         if let Some(extension) = extension {
             let languages =
-                detectors::get_languages_from_heuristics(&extension[..], &candidates, &content);
+                detectors::get_languages_from_heuristics(extension, &candidates, content);
             filter_candidates(candidates, languages)
         } else {
             candidates
@@ -191,7 +191,7 @@ pub fn detect_buffer<T: std::io::Read + std::io::Seek>(
         0 => Ok(None),
         1 => Ok(Some(Detection::Heuristics(candidates[0]))),
         _ => Ok(Some(Detection::Classifier(detectors::classify(
-            &content,
+            content,
             &candidates,
         )))),
     }
@@ -208,7 +208,7 @@ pub fn detect_buffer<T: std::io::Read + std::io::Seek>(
 /// use std::path::Path;
 /// use hyperpolyglot::{detect, Detection};
 ///
-/// let path = Path::new("src/bin/main.rs");
+/// let path = Path::new("test_main.rs");
 /// let language = detect(path).unwrap().unwrap();
 /// assert_eq!(Detection::Heuristics("Rust"), language);
 /// ```
@@ -412,7 +412,7 @@ mod tests {
             .unwrap()
             .map(|entry| entry.unwrap())
             .filter(|entry| entry.path().is_dir())
-            .map(|language_dir| {
+            .flat_map(|language_dir| {
                 let path = language_dir.path();
                 let language = path.file_name().unwrap();
                 let language = language.to_string_lossy().into_owned();
@@ -425,7 +425,6 @@ mod tests {
                 let language_iter = iter::repeat(language);
                 file_paths.zip(language_iter)
             })
-            .flatten()
             .for_each(|(file, language)| {
                 // Skip the files we can't detect. The reason the detect function fails on these is
                 // because of a heuristic added to .h files that defaults to C if none of the

@@ -122,7 +122,7 @@ impl PatternDTO {
         match self {
             PatternDTO::Positive(MaybeMany::One(pattern)) => {
                 // Panic on invalid regex now so we can unwrap in lib
-                let pattern = mangle(&pattern);
+                let pattern = mangle(pattern);
                 if let Err(e) = Regex::new(&pattern) {
                     panic!("Invalid regex pattern: {}\n{}", pattern, e);
                 }
@@ -130,7 +130,7 @@ impl PatternDTO {
             }
             PatternDTO::Negative(pattern) => {
                 // Panic on invalid regex now so we can unwrap in lib
-                let pattern = mangle(&pattern);
+                let pattern = mangle(pattern);
                 if let Err(e) = Regex::new(&pattern) {
                     panic!("Invalid regex pattern: {}\n{}", pattern, e);
                 }
@@ -159,13 +159,13 @@ impl PatternDTO {
                 if let Some(pattern) = named_patterns.get(pattern_name) {
                     // Assume that all named patterns are positive
                     let pattern = PatternDTO::Positive(pattern.clone());
-                    return pattern.to_domain_object_code(named_patterns);
+                    pattern.to_domain_object_code(named_patterns)
                 } else {
                     panic!(
                         "Named pattern: {} not found in named pattern map",
                         pattern_name
                     );
-                };
+                }
             }
         }
     }
@@ -211,7 +211,7 @@ fn main() {
 fn write_language_list(languages: &LanguageMap) {
     let mut file = BufWriter::new(File::create(LANGUAGE_LIST_FILE).unwrap());
 
-    let languages: Vec<String> = languages.keys().map(|language| language.clone()).collect();
+    let languages: Vec<String> = languages.keys().cloned().collect();
 
     writeln!(
         &mut file,
@@ -368,7 +368,7 @@ fn train_classifier() {
         .unwrap()
         .map(|entry| entry.unwrap())
         .filter(|entry| entry.path().is_dir())
-        .map(|language_dir| {
+        .flat_map(|language_dir| {
             let path = language_dir.path();
             let language = path.file_name().unwrap();
             let language = language.to_string_lossy().into_owned();
@@ -385,7 +385,6 @@ fn train_classifier() {
             let language_iter = iter::repeat(language);
             file_paths.zip(language_iter)
         })
-        .flatten()
         .for_each(|(entry, language)| {
             let content = fs::read(entry).unwrap();
 

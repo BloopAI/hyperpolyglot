@@ -9,5 +9,5 @@ name = "py_polyglot_tokenizer"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = {version = "0.9.2", features = ["extension-module"] }
+pyo3 = {version = "0.19.1", features = ["extension-module"] }
 polyglot_tokenizer = { path="../polyglot_tokenizer" }

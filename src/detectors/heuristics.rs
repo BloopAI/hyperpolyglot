@@ -78,7 +78,7 @@ mod tests {
     #[test]
     fn test_heuristics_get_languages_positive_pattern() {
         assert_eq!(
-            get_languages_from_heuristics(".es", &vec!["Erlang", "JavaScript"], "'use strict';"),
+            get_languages_from_heuristics(".es", &["Erlang", "JavaScript"], "'use strict';"),
             vec!["JavaScript"]
         );
     }
@@ -88,7 +88,7 @@ mod tests {
         assert_eq!(
             get_languages_from_heuristics(
                 ".sql",
-                &vec!["PLSQL", "PLpgSQL", "SQL", "SQLPL", "TSQL"],
+                &["PLSQL", "PLpgSQL", "SQL", "SQLPL", "TSQL"],
                 "LALA THIS IS SQL"
             ),
             vec!["SQL"]
@@ -100,7 +100,7 @@ mod tests {
         assert_eq!(
             get_languages_from_heuristics(
                 ".pro",
-                &vec!["Proguard", "Prolog", "INI", "QMake", "IDL"],
+                &["Proguard", "Prolog", "INI", "QMake", "IDL"],
                 "HEADERS SOURCES"
             ),
             vec!["QMake"]
@@ -113,7 +113,7 @@ mod tests {
         assert_eq!(
             get_languages_from_heuristics(
                 ".pro",
-                &vec!["Proguard", "Prolog", "INI", "QMake", "IDL"],
+                &["Proguard", "Prolog", "INI", "QMake", "IDL"],
                 "HEADERS"
             ),
             empty_vec
@@ -125,7 +125,7 @@ mod tests {
         assert_eq!(
             get_languages_from_heuristics(
                 ".ms",
-                &vec!["Roff", "Unix Assembly", "MAXScript"],
+                &["Roff", "Unix Assembly", "MAXScript"],
                 ".include:"
             ),
             vec!["Unix Assembly"]
@@ -135,7 +135,7 @@ mod tests {
     #[test]
     fn test_heuristics_get_languages_or_pattern() {
         assert_eq!(
-            get_languages_from_heuristics(".p", &vec!["Gnuplot", "OpenEdge ABL"], "plot"),
+            get_languages_from_heuristics(".p", &["Gnuplot", "OpenEdge ABL"], "plot"),
             vec!["Gnuplot"]
         );
     }
@@ -143,7 +143,7 @@ mod tests {
     #[test]
     fn test_heuristics_get_languages_named_pattern() {
         assert_eq!(
-            get_languages_from_heuristics(".h", &vec!["Objective-C", "C++"], "std::out"),
+            get_languages_from_heuristics(".h", &["Objective-C", "C++"], "std::out"),
             vec!["C++"]
         );
     }
@@ -151,7 +151,7 @@ mod tests {
     #[test]
     fn test_heuristics_get_languages_default_pattern() {
         assert_eq!(
-            get_languages_from_heuristics(".man", &vec!["Roff Manpage", "Roff"], "alskdjfahij"),
+            get_languages_from_heuristics(".man", &["Roff Manpage", "Roff"], "alskdjfahij"),
             vec!["Roff"]
         );
     }
@@ -161,7 +161,7 @@ mod tests {
         assert_eq!(
             get_languages_from_heuristics(
                 ".1in",
-                &vec!["Roff Manpage", "Roff"],
+                &["Roff Manpage", "Roff"],
                 r#".TH LYXCLIENT 1 "@LYX_DATE@" "Version @VERSION@" "lyxclient @VERSION@"
 .SH NAME"#
             ),
